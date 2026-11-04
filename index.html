@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="pt-PT" data-theme="dark">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#111111">
+  <title>Nata do Bairro - Menu Digital</title>
+
+  <!-- Aplica o tema guardado antes de desenhar a página  -->
+  <script>
+    try {
+      var t = localStorage.getItem('theme');
+      if (t === 'light' || t === 'dark') document.documentElement.setAttribute('data-theme', t);
+    } catch (e) {}
+  </script>
+
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Caveat:wght@700&family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+
+  <header class="header">
+    <button id="themeToggle" class="theme-toggle" onclick="toggleTheme()" aria-label="Mudar para tema claro" title="Mudar tema">
+      <span class="icon-sun" aria-hidden="true">☀️</span>
+      <span class="icon-moon" aria-hidden="true">🌙</span>
+    </button>
+
+    <div class="logo-area">
+      <img src="logo.png" alt="Nata do Bairro" class="logo">
+      <p class="tagline">um <b>bairro</b> com muita nata</p>
+      <span class="hashtag">#natadobairro</span>
+    </div>
+
+    <div class="search-box">
+      <input type="text" id="searchInput" placeholder="Pesquisar" oninput="searchMenu()">
+      <button id="clearSearch" onclick="clearSearch()" style="display: none;" aria-label="Limpar pesquisa">✕</button>
+    </div>
+  </header>
+
+  <nav class="categories-nav">
+    <button class="nav-btn active" onclick="filterCategory('todos', event)">Todos</button>
+    <button class="nav-btn" onclick="filterCategory('menus', event)">Menus</button>
+    <button class="nav-btn" onclick="filterCategory('croissants', event)">Croissants</button>
+    <button class="nav-btn" onclick="filterCategory('especiais', event)">Pastelaria & Salgados</button>
+    <button class="nav-btn" onclick="filterCategory('tostas', event)">Tostas & Torradas</button>
+    <button class="nav-btn" onclick="filterCategory('cafetaria', event)">Cafetaria & Bebidas</button>
+  </nav>
+
+  <div id="noResults" class="no-results" style="display: none;">
+    <p>Nenhum produto encontrado para a sua pesquisa.</p>
+  </div>
+
+  <main class="menu-container">
+
+    <!-- MENUS COMBINADOS -->
+    <section class="menu-section" data-category="menus">
+      <h2 class="section-title">Menus <span>Combinados</span></h2>
+
+      <div class="card highlight" data-keywords="menu torrada do bairro abatanado meia de leite">
+        <div class="card-header"><h3>Menu Torrada do Bairro</h3></div>
+        <div class="card-details">
+          <p>Torrada + Abatanado <span>€ 3,50</span></p>
+          <p>Torrada + Meia de Leite <span>€ 4,00</span></p>
+        </div>
+      </div>
+
+      <div class="card highlight" data-keywords="menu croissant nutella italiano abatanado meia de leite">
+        <div class="card-header"><h3>Menu Croissant Nutella</h3></div>
+        <div class="card-details">
+          <p>Croissant IT Nutella + Abatanado <span>€ 4,40</span></p>
+          <p>Croissant IT Nutella + Meia de Leite <span>€ 4,90</span></p>
+        </div>
+      </div>
+
+      <div class="card highlight" data-keywords="menu tosta mista sumo natural laranja">
+        <div class="card-header">
+          <h3>Menu Tosta</h3>
+          <span class="price">€ 6,50</span>
+        </div>
+        <p class="card-desc">Tosta mista + sumo natural</p>
+      </div>
+    </section>
+
+    <!-- CROISSANTS -->
+    <section class="menu-section" data-category="croissants">
+      <h2 class="section-title">Croissants <span>Especiais</span></h2>
+
+      <div class="card" data-keywords="croissant portugues misto doce de ovos">
+        <div class="card-header"><h3>Português PT</h3></div>
+        <div class="card-details">
+          <p>Misto <span>€ 3,00</span></p>
+          <p>Doce de ovos <span>€ 2,90</span></p>
+        </div>
+      </div>
+
+      <div class="card" data-keywords="croissant italiano nutella queijo fiambre tomate oregano oregaos">
+        <div class="card-header"><h3>Italiano IT</h3></div>
+        <div class="card-details">
+          <p>Nutella <span>€ 3,10</span></p>
+          <p>Queijo, fiambre, tomate e orégãos <span>€ 3,60</span></p>
+        </div>
+      </div>
+
+      <div class="card" data-keywords="croissant frances simples manteiga">
+        <div class="card-header"><h3>Francês FR</h3></div>
+        <div class="card-details">
+          <p>Simples <span>€ 2,10</span></p>
+          <p>Com manteiga <span>€ 2,30</span></p>
+        </div>
+      </div>
+
+      <div class="card" data-keywords="croissant brasileiro frango pasta">
+        <div class="card-header"><h3>Brasileiro BR</h3></div>
+        <div class="card-details">
+          <p>Pasta de frango <span>€ 3,80</span></p>
+        </div>
+      </div>
+
+      <div class="card" data-keywords="croissant espanhol queijo fresco presunto tomate salada doce de leite">
+        <div class="card-header"><h3>Espanhol ES</h3></div>
+        <div class="card-details">
+          <p>Queijo fresco, presunto, tomate e salada <span>€ 3,50</span></p>
+          <!-- TODO: confirmar preço do Doce de leite com a chefe (não veio na lista) -->
+          <p>Doce de leite <span>€ 2,90</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PANQUECAS -->
+    <section class="menu-section" data-category="especiais">
+      <h2 class="section-title">Panquecas</h2>
+
+      <div class="card" data-keywords="panqueca unidade recheio doce">
+        <div class="card-details first">
+          <p>Unidade <span>€ 1,80</span></p>
+          <p>Com recheio <span>€ 2,00</span></p>
+          <p>Duas com recheio <span>€ 3,90</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PÃES -->
+    <section class="menu-section" data-category="especiais">
+      <h2 class="section-title">Pães</h2>
+
+      <div class="card" data-keywords="pao de queijo recheio">
+        <div class="card-header"><h3>Pão de Queijo</h3></div>
+        <div class="card-details">
+          <p>Simples <span>€ 1,50</span></p>
+          <p>Com recheio <span>€ 1,70</span></p>
+        </div>
+      </div>
+
+      <div class="card" data-keywords="pao frances manteiga misto">
+        <div class="card-header"><h3>Pão Francês</h3></div>
+        <div class="card-details">
+          <p>Simples <span>€ 1,20</span></p>
+          <p>Com manteiga <span>€ 1,80</span></p>
+          <p>Misto <span>€ 2,20</span></p>
+        </div>
+      </div>
+    </section>
+
+    <!-- PASTÉIS DE NATA -->
+    <section class="menu-section" data-category="especiais">
+      <h2 class="section-title">Pastéis <span>de Nata</span></h2>
+
+      <div class="card" data-keywords="pastel de nata unidade doce">
+        <div class="card-header">
+          <h3>Pastel de Nata</h3>
+          <span class="price">€ 1,30</span>
+        </div>
+      </div>
+
+      <div class="card" data-keywords="pastel de nata caixa 6 unidades seis">
+        <div class="card-header">
+          <h3>Caixa de 6 Pastéis de Nata</h3>
+          <span class="price">€ 7,80</span>
+        </div>
+        <p class="card-desc">Caixa inclusa</p>
+      </div>
+
+      <div class="card" data-keywords="pastel de nata frutos vermelhos">
+        <div class="card-header">
+          <h3>Pastel de Nata Frutos Vermelhos</h3>
+          <span class="price">€ 1,70</span>
+        </div>
+      </div>
+
+      <div class="card vegan" data-keywords="pastel de nata vegan vegetariano sem lactose encomenda">
+        <div class="card-header">
+          <h3>Pastel de Nata Vegan</h3>
+          <span class="price">€ 1,90</span>
+        </div>
+        <p class="card-desc">Por encomenda</p>
+      </div>
+
+      <div class="card" data-keywords="pastel de chocolate doce">
+        <div class="card-header">
+          <h3>Pastel de Chocolate</h3>
+          <span class="price">€ 1,50</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- SALGADOS -->
+    <section class="menu-section" data-category="especiais">
+      <h2 class="section-title">Salgados</h2>
+
+      <div class="card" data-keywords="esfirra frango carne folhado salgado">
+        <div class="card-header"><h3>Esfirra</h3></div>
+        <div class="card-details">
+          <p>Frango <span>€ 2,50</span></p>
+          <p>Carne <span>€ 2,50</span></p>
+        </div>
+      </div>
+
+      <div class="card" data-keywords="coxinha frango salgado">
+        <div class="card-header">
+          <h3>Coxinha</h3>
+          <span class="price">€ 2,50</span>
+        </div>
+      </div>
+
+      <div class="card" data-keywords="empada salgado">
+        <div class="card-header">
+          <h3>Empada</h3>
+          <span class="price">€ 2,20</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- TOSTAS & TORRADAS -->
+    <section class="menu-section" data-category="tostas">
+      <h2 class="section-title">Tostas <span>& Torradas</span></h2>
+
+      <div class="card" data-keywords="torrada pao manteiga">
+        <div class="card-header">
+          <h3>Torrada</h3>
+          <span class="price">€ 2,90</span>
+        </div>
+      </div>
+
+      <div class="card" data-keywords="tosta mista queijo fiambre">
+        <div class="card-header">
+          <h3>Tosta Mista</h3>
+          <span class="price">€ 4,50</span>
+        </div>
+      </div>
+
+      <div class="card" data-keywords="tosta mista especial queijo fiambre">
+        <div class="card-header">
+          <h3>Tosta Mista Especial</h3>
+          <span class="price">€ 5,00</span>
+        </div>
+      </div>
+
+      <div class="card" data-keywords="tosta atum peixe">
+        <div class="card-header">
+          <h3>Tosta de Atum</h3>
+          <span class="price">€ 5,20</span>
+        </div>
+      </div>
+
+      <div class="card" data-keywords="tosta frango carne">
+        <div class="card-header">
+          <h3>Tosta de Frango</h3>
+          <span class="price">€ 5,20</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- CAFETARIA -->
+    <section class="menu-section" data-category="cafetaria">
+      <h2 class="section-title">Cafetaria</h2>
+
+      <div class="menu-grid">
+        <div class="item-row" data-keywords="cafe expresso bica"><span>Café</span> <strong>€ 0,95</strong></div>
+        <div class="item-row" data-keywords="garoto cafe"><span>Garoto</span> <strong>€ 0,95</strong></div>
+        <div class="item-row" data-keywords="cafe pingado"><span>Pingado</span> <strong>€ 1,00</strong></div>
+        <div class="item-row" data-keywords="abatanado cafe"><span>Abatanado</span> <strong>€ 1,10</strong></div>
+        <div class="item-row" data-keywords="cafe sabores caramelo avela"><span>Café Sabores (Caramelo / Avelã)</span> <strong>€ 1,15</strong></div>
+        <div class="item-row" data-keywords="copo de leite"><span>Copo de Leite</span> <strong>€ 1,20</strong></div>
+        <div class="item-row" data-keywords="meia de leite 1/2 cafe"><span>Meia de Leite</span> <strong>€ 1,60</strong></div>
+        <div class="item-row" data-keywords="cafe duplo"><span>Duplo</span> <strong>€ 1,90</strong></div>
+        <div class="item-row" data-keywords="latte macchiato cafe leite"><span>Latte</span> <strong>€ 2,00</strong></div>
+        <div class="item-row" data-keywords="chocolate quente"><span>Chocolate Quente</span> <strong>€ 2,80</strong></div>
+        <div class="item-row" data-keywords="cha 1 pessoa"><span>Chá (1 pessoa)</span> <strong>€ 1,50</strong></div>
+        <div class="item-row" data-keywords="cha 2 pessoas"><span>Chá (2 pessoas)</span> <strong>€ 2,80</strong></div>
+      </div>
+    </section>
+
+    <!-- BEBIDAS -->
+    <section class="menu-section" data-category="cafetaria">
+      <h2 class="section-title">Bebidas</h2>
+
+      <div class="menu-grid">
+        <div class="item-row" data-keywords="agua sem gas"><span>Água S/ Gás</span> <strong>€ 1,10</strong></div>
+        <div class="item-row" data-keywords="agua com gas"><span>Água C/ Gás</span> <strong>€ 1,60</strong></div>
+        <div class="item-row" data-keywords="agua com gas sabores"><span>Água Sabores</span> <strong>€ 1,70</strong></div>
+        <div class="item-row" data-keywords="refrigerante coca cola fanta sprite guarana"><span>Refrigerante</span> <strong>€ 2,00</strong></div>
+        <div class="item-row" data-keywords="red bull energetica"><span>Red Bull</span> <strong>€ 2,70</strong></div>
+        <div class="item-row" data-keywords="monster energetica"><span>Monster</span> <strong>€ 2,50</strong></div>
+        <div class="item-row" data-keywords="compal sumo nectar"><span>Compal</span> <strong>€ 1,90</strong></div>
+        <div class="item-row" data-keywords="limonada sumo limao"><span>Limonada</span> <strong>€ 2,00</strong></div>
+        <div class="item-row" data-keywords="leite chocolate ucal"><span>Leite Chocolate</span> <strong>€ 1,90</strong></div>
+        <div class="item-row" data-keywords="sumo natural laranja"><span>Sumo Natural</span> <strong>€ 2,90</strong></div>
+        <div class="item-row" data-keywords="cerveja estrella"><span>Cerveja Estrella</span> <strong>€ 1,50</strong></div>
+        <div class="item-row" data-keywords="cerveja mini super bock sagres"><span>Mini Super Bock / Sagres</span> <strong>€ 1,20</strong></div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>IVA incluído à taxa legal em vigor</p>
+  </footer>
+
+  <script src="main.js"></script>
+</body>
+</html>
